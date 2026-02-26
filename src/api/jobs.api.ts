@@ -29,9 +29,9 @@ export const jobsAPI = {
     return apiClient.get(`/jobs/feed?${params.toString()}`);
   },
 
-  getMyJobs: async (status?: string): Promise<{ jobs: Job[] }> => {
+  getMyJobs: async (status?: string): Promise<{ jobs: Job[]; nextCursor: string | null }> => {
     const params = status ? `?status=${status}` : '';
-    return apiClient.get(`/jobs/mine${params}`);
+    return apiClient.get(`/jobs/${params}`);
   },
 
   getJobById: async (id: string): Promise<{ job: Job }> => {

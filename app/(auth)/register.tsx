@@ -27,16 +27,14 @@ export default function RegisterScreen() {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const { setTokens } = useAuthStore();
-  const { setUser, setCustomerProfile, setProviderProfile } = useSessionStore();
+  const { setUser } = useSessionStore();
   const { showToast } = useUIStore();
 
   const registerMutation = useMutation({
     mutationFn: (data: RegisterInput) => authAPI.register(data),
     onSuccess: async (data) => {
-      await setTokens(data.tokens.access_token, data.tokens.refresh_token);
+      await setTokens(data.access_token, data.refresh_token);
       setUser(data.user);
-      if (data.customer_profile) setCustomerProfile(data.customer_profile);
-      if (data.provider_profile) setProviderProfile(data.provider_profile);
       showToast({ type: 'success', message: 'Account created successfully!' });
 
       // Navigate based on role

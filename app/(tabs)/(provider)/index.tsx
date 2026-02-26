@@ -20,7 +20,7 @@ export default function ProviderFeedScreen() {
   } = useInfiniteQuery({
     queryKey: ['jobFeed'],
     queryFn: ({ pageParam }) => jobsAPI.getFeed({ cursor: pageParam, limit: 20 }),
-    getNextPageParam: (lastPage) => lastPage.next_cursor,
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
     initialPageParam: undefined,
   });
 

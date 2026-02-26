@@ -28,18 +28,14 @@ export interface User {
   created_at: string;
 }
 
-export interface AuthTokens {
-  access_token: string;
-  refresh_token: string;
-  expires_in: number;
-}
-
 export interface LoginResponse {
   user: User;
-  tokens: AuthTokens;
-  customer_profile?: CustomerProfile;
-  provider_profile?: ProviderProfile;
+  access_token: string;
+  refresh_token: string;
 }
+
+// Re-exported for convenience — source of truth is the schema file
+export type { LoginInput, RegisterInput } from '../schemas/auth.schema';
 
 // ===== JOB =====
 
@@ -109,8 +105,7 @@ export interface JobAttachment {
 
 export interface JobFeedResponse {
   jobs: Job[];
-  next_cursor: string | null;
-  has_more: boolean;
+  nextCursor: string | null;
 }
 
 // ===== QUOTE =====

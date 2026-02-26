@@ -68,8 +68,12 @@ class APIClient {
               refresh_token: refreshToken,
             });
 
-            const { access_token } = response.data;
-            useAuthStore.getState().setAccessToken(access_token);
+            const { access_token, refresh_token: new_refresh } = response.data;
+            if (new_refresh) {
+              await useAuthStore.getState().setTokens(access_token, new_refresh);
+            } else {
+              useAuthStore.getState().setAccessToken(access_token);
+            }
 
             // Retry all queued requests
             this.refreshSubscribers.forEach((callback) => callback(access_token));
@@ -116,10 +120,11 @@ class APIClient {
 
   private normalizeError(error: AxiosError): { message: string; status?: number; errors?: any } {
     if (error.response) {
+      const data = error.response.data as any;
       return {
-        message: (error.response.data as any)?.message || 'An error occurred',
+        message: data?.error?.message || data?.message || 'An error occurred',
         status: error.response.status,
-        errors: (error.response.data as any)?.errors,
+        errors: data?.errors,
       };
     }
     return { message: error.message || 'Network error' };
