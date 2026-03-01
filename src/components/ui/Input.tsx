@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { cssInterop } from 'nativewind';
 import { Ionicons } from '@expo/vector-icons';
+
+const StyledIcon = cssInterop(Ionicons, { className: 'style' });
 
 interface InputProps {
   label?: string;
@@ -17,6 +20,7 @@ interface InputProps {
   required?: boolean;
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
   autoComplete?: any;
+  className?: string;
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -34,6 +38,7 @@ export const Input: React.FC<InputProps> = ({
   required = false,
   autoCapitalize = 'none',
   autoComplete = 'off',
+  className = '',
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -53,20 +58,34 @@ export const Input: React.FC<InputProps> = ({
   const isPasswordType = type === 'password';
   const secureTextEntry = isPasswordType && !showPassword;
 
+  const containerClasses = `mb-4 ${className}`;
+  const labelClasses = 'text-sm font-medium text-gray-900 mb-1.5';
+  const requiredClasses = 'text-red-500';
+  const inputContainerClasses = `
+    flex-row items-center bg-white border border-gray-200 rounded-lg px-3
+    ${error ? 'border-red-500' : ''}
+    ${disabled ? 'bg-gray-100' : ''}
+  `;
+  const inputClasses = `
+    flex-1 h-11 text-base text-gray-900 py-2.5
+    ${multiline ? 'h-25 text-top py-3' : ''}
+    ${leftIcon ? 'pl-0' : ''}
+  `;
+  const iconClasses = 'text-gray-400';
+  const errorTextClasses = 'text-xs text-red-500 mt-1';
+
   return (
-    <View style={styles.container}>
+    <View className={containerClasses}>
       {label && (
-        <Text style={styles.label}>
+        <Text className={labelClasses}>
           {label}
-          {required && <Text style={styles.required}> *</Text>}
+          {required && <Text className={requiredClasses}> *</Text>}
         </Text>
       )}
-      <View style={[styles.inputContainer, error && styles.inputError, disabled && styles.inputDisabled]}>
-        {leftIcon && (
-          <Ionicons name={leftIcon} size={20} color="#9CA3AF" style={styles.leftIcon} />
-        )}
+      <View className={inputContainerClasses}>
+        {leftIcon && <StyledIcon name={leftIcon} size={20} className={`${iconClasses} mr-2`} />}
         <TextInput
-          style={[styles.input, multiline && styles.multiline, leftIcon && { paddingLeft: 0 }]}
+          className={inputClasses}
           placeholder={placeholder}
           placeholderTextColor="#9CA3AF"
           value={value}
@@ -80,69 +99,19 @@ export const Input: React.FC<InputProps> = ({
           autoComplete={autoComplete}
           autoCorrect={false}
         />
-        {isPasswordType && (
-          <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.rightIcon}>
-            <Ionicons name={showPassword ? 'eye-off-outline' : 'eye-outline'} size={20} color="#9CA3AF" />
+        {isPasswordType ? (
+          <TouchableOpacity onPress={() => setShowPassword(!showPassword)} className="ml-2">
+            <StyledIcon
+              name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+              size={20}
+              className={iconClasses}
+            />
           </TouchableOpacity>
-        )}
-        {!isPasswordType && rightIcon && (
-          <Ionicons name={rightIcon} size={20} color="#9CA3AF" style={styles.rightIcon} />
-        )}
+        ) : rightIcon ? (
+          <StyledIcon name={rightIcon} size={20} className={`${iconClasses} ml-2`} />
+        ) : null}
       </View>
-      {error && <Text style={styles.errorText}>{error}</Text>}
+      {error && <Text className={errorTextClasses}>{error}</Text>}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginBottom: 16,
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#111827',
-    marginBottom: 6,
-  },
-  required: {
-    color: '#EF4444',
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    borderWidth: 1,
-    borderColor: '#E5E7EB',
-    borderRadius: 8,
-    paddingHorizontal: 12,
-  },
-  inputError: {
-    borderColor: '#EF4444',
-  },
-  inputDisabled: {
-    backgroundColor: '#F3F4F6',
-  },
-  input: {
-    flex: 1,
-    height: 44,
-    fontSize: 16,
-    color: '#111827',
-    paddingVertical: 10,
-  },
-  multiline: {
-    height: 100,
-    textAlignVertical: 'top',
-    paddingVertical: 12,
-  },
-  leftIcon: {
-    marginRight: 8,
-  },
-  rightIcon: {
-    marginLeft: 8,
-  },
-  errorText: {
-    fontSize: 12,
-    color: '#EF4444',
-    marginTop: 4,
-  },
-});

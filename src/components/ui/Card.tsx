@@ -1,17 +1,21 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 
 interface CardProps {
   children: React.ReactNode;
   onPress?: () => void;
-  style?: any;
+  className?: string;
 }
 
-export const Card: React.FC<CardProps> = ({ children, onPress, style }) => {
+const cardClasses = 'bg-white rounded-xl p-4 shadow-sm';
+
+export const Card: React.FC<CardProps> = ({ children, onPress, className = '' }) => {
+  const combinedClasses = `${cardClasses} ${className}`;
+
   if (onPress) {
     return (
       <TouchableOpacity
-        style={[styles.card, style]}
+        className={combinedClasses}
         onPress={onPress}
         activeOpacity={0.7}
       >
@@ -20,18 +24,5 @@ export const Card: React.FC<CardProps> = ({ children, onPress, style }) => {
     );
   }
 
-  return <View style={[styles.card, style]}>{children}</View>;
+  return <View className={combinedClasses}>{children}</View>;
 };
-
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 12,
-    padding: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 8,
-    elevation: 2,
-  },
-});

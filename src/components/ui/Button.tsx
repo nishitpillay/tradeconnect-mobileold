@@ -1,10 +1,57 @@
 import React from 'react';
-import { TouchableOpacity, Text, ActivityIndicator, View, StyleSheet } from 'react-native';
+import { TouchableOpacity, Text, ActivityIndicator } from 'react-native';
+import { cssInterop } from 'nativewind';
 import { Ionicons } from '@expo/vector-icons';
+import { cva, type VariantProps } from 'class-variance-authority';
 
-interface ButtonProps {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
-  size?: 'sm' | 'md' | 'lg';
+const StyledIcon = cssInterop(Ionicons, { className: 'style' });
+
+const buttonVariants = cva(
+  'flex-row items-center justify-center rounded-lg',
+  {
+    variants: {
+      variant: {
+        primary: 'bg-blue-500',
+        secondary: 'bg-gray-100',
+        outline: 'border border-blue-500 bg-transparent',
+        ghost: 'bg-transparent',
+        danger: 'bg-red-500',
+      },
+      size: {
+        sm: 'h-9 px-3',
+        md: 'h-11 px-4',
+        lg: 'h-13 px-5',
+      },
+    },
+    defaultVariants: {
+      variant: 'primary',
+      size: 'md',
+    },
+  }
+);
+
+const buttonTextVariants = cva('font-semibold', {
+  variants: {
+    variant: {
+      primary: 'text-white',
+      secondary: 'text-gray-900',
+      outline: 'text-blue-500',
+      ghost: 'text-blue-500',
+      danger: 'text-white',
+    },
+    size: {
+      sm: 'text-sm',
+      md: 'text-base',
+      lg: 'text-lg',
+    },
+  },
+  defaultVariants: {
+    variant: 'primary',
+    size: 'md',
+  },
+});
+
+interface ButtonProps extends VariantProps<typeof buttonVariants> {
   loading?: boolean;
   disabled?: boolean;
   fullWidth?: boolean;
@@ -12,11 +59,12 @@ interface ButtonProps {
   rightIcon?: keyof typeof Ionicons.glyphMap;
   onPress: () => void;
   children: React.ReactNode;
+  className?: string;
 }
 
 export const Button: React.FC<ButtonProps> = ({
-  variant = 'primary',
-  size = 'md',
+  variant,
+  size,
   loading = false,
   disabled = false,
   fullWidth = false,
@@ -24,86 +72,54 @@ export const Button: React.FC<ButtonProps> = ({
   rightIcon,
   onPress,
   children,
+  className = '',
 }) => {
   const isDisabled = disabled || loading;
 
-  const getVariantStyles = () => {
-    switch (variant) {
-      case 'primary':
-        return { bg: '#3B82F6', text: '#FFFFFF' };
-      case 'secondary':
-        return { bg: '#F3F4F6', text: '#111827' };
-      case 'outline':
-        return { bg: 'transparent', text: '#3B82F6', border: '#3B82F6' };
-      case 'ghost':
-        return { bg: 'transparent', text: '#3B82F6' };
-      case 'danger':
-        return { bg: '#EF4444', text: '#FFFFFF' };
-      default:
-        return { bg: '#3B82F6', text: '#FFFFFF' };
-    }
-  };
+  const textVariant = variant;
+  const textSize = size;
 
-  const getSizeStyles = () => {
-    switch (size) {
-      case 'sm':
-        return { height: 36, paddingHorizontal: 12, fontSize: 14 };
-      case 'md':
-        return { height: 44, paddingHorizontal: 16, fontSize: 16 };
-      case 'lg':
-        return { height: 52, paddingHorizontal: 20, fontSize: 18 };
-      default:
-        return { height: 44, paddingHorizontal: 16, fontSize: 16 };
-    }
-  };
-
-  const variantStyles = getVariantStyles();
-  const sizeStyles = getSizeStyles();
+  const iconSize = {
+    sm: 20,
+    md: 24,
+    lg: 28,
+  }[size || 'md'];
 
   return (
     <TouchableOpacity
-      style={[
-        styles.button,
-        {
-          backgroundColor: variantStyles.bg,
-          height: sizeStyles.height,
-          paddingHorizontal: sizeStyles.paddingHorizontal,
-          borderWidth: variantStyles.border ? 1 : 0,
-          borderColor: variantStyles.border,
-          width: fullWidth ? '100%' : 'auto',
-          opacity: isDisabled ? 0.5 : 1,
-        },
-      ]}
+      className={`${buttonVariants({ variant, size })} ${
+        fullWidth ? 'w-full' : ''
+      } ${isDisabled ? 'opacity-50' : ''} ${className}`}
       onPress={onPress}
       disabled={isDisabled}
       activeOpacity={0.7}
     >
-      <View style={styles.content}>
-        {loading && <ActivityIndicator size="small" color={variantStyles.text} style={{ marginRight: 8 }} />}
-        {!loading && leftIcon && (
-          <Ionicons name={leftIcon} size={sizeStyles.fontSize + 4} color={variantStyles.text} style={{ marginRight: 8 }} />
+      {loading ? (
+        <ActivityIndicator
+          className="mr-2"
+        />
+      ) : (
+        leftIcon && (
+          <StyledIcon
+            name={leftIcon}
+            size={iconSize}
+            className={`${buttonTextVariants({ variant: textVariant, size: textSize })} mr-2`}
+          />
+        )
+      )}
+      <Text
+        className={buttonTextVariants({ variant: textVariant, size: textSize })}
+      >
+        {children}
+      </Text>
+      {!loading &&
+        rightIcon && (
+          <StyledIcon
+            name={rightIcon}
+            size={iconSize}
+            className={`${buttonTextVariants({ variant: textVariant, size: textSize })} ml-2`}
+          />
         )}
-        <Text style={[styles.text, { color: variantStyles.text, fontSize: sizeStyles.fontSize }]}>{children}</Text>
-        {!loading && rightIcon && (
-          <Ionicons name={rightIcon} size={sizeStyles.fontSize + 4} color={variantStyles.text} style={{ marginLeft: 8 }} />
-        )}
-      </View>
     </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  button: {
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  content: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  text: {
-    fontWeight: '600',
-  },
-});
