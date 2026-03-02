@@ -1,41 +1,51 @@
 import { apiClient } from './client';
-import type { Quote, SubmitQuoteInput } from '../types';
+import type { Quote } from '../types';
 
 export const quotesAPI = {
+  // Customer: list all quotes for a job
   getQuotesForJob: async (jobId: string): Promise<{ quotes: Quote[] }> => {
     return apiClient.get(`/jobs/${jobId}/quotes`);
   },
 
+  // Provider: list own quotes
   getMyQuotes: async (status?: string): Promise<{ quotes: Quote[] }> => {
     const params = status ? `?status=${status}` : '';
-    return apiClient.get(`/quotes/mine${params}`);
+    return apiClient.get(`/quotes/my-quotes${params}`);
   },
 
   getQuoteById: async (id: string): Promise<{ quote: Quote }> => {
     return apiClient.get(`/quotes/${id}`);
   },
 
-  submitQuote: async (jobId: string, data: SubmitQuoteInput): Promise<{ quote: Quote }> => {
+  // Provider: submit quote on a specific job (prices in AUD cents)
+  submitQuote: async (jobId: string, data: {
+    quote_type: 'fixed' | 'estimate_range' | 'hourly' | 'call_for_quote';
+    price_fixed?: number;
+    price_min?: number;
+    price_max?: number;
+    hourly_rate?: number;
+    is_gst_included?: boolean;
+    scope_notes?: string;
+    inclusions?: string;
+    exclusions?: string;
+    timeline_days?: number;
+    warranty_months?: number;
+  }): Promise<{ quote: Quote }> => {
     return apiClient.post(`/jobs/${jobId}/quotes`, data);
   },
 
-  updateQuote: async (id: string, data: Partial<SubmitQuoteInput>): Promise<{ quote: Quote }> => {
-    return apiClient.patch(`/quotes/${id}`, data);
+  // Provider: withdraw a quote
+  withdrawQuote: async (jobId: string, quoteId: string): Promise<void> => {
+    return apiClient.delete(`/jobs/${jobId}/quotes/${quoteId}`);
   },
 
-  withdrawQuote: async (id: string, reason?: string): Promise<{ quote: Quote }> => {
-    return apiClient.post(`/quotes/${id}/withdraw`, { withdrawal_reason: reason });
+  // Provider: accept the job after their quote was awarded
+  acceptJob: async (jobId: string): Promise<void> => {
+    return apiClient.post(`/jobs/${jobId}/accept`);
   },
 
-  markQuoteViewed: async (id: string): Promise<{ quote: Quote }> => {
-    return apiClient.post(`/quotes/${id}/action`, { action: 'viewed' });
-  },
-
-  shortlistQuote: async (id: string): Promise<{ quote: Quote }> => {
-    return apiClient.post(`/quotes/${id}/action`, { action: 'shortlisted' });
-  },
-
-  rejectQuote: async (id: string): Promise<{ quote: Quote }> => {
-    return apiClient.post(`/quotes/${id}/action`, { action: 'rejected' });
+  // Customer: shortlist or reject a specific quote
+  quoteAction: async (jobId: string, quoteId: string, action: 'shortlisted' | 'rejected'): Promise<{ quote: Quote }> => {
+    return apiClient.patch(`/jobs/${jobId}/quotes/${quoteId}`, { action });
   },
 };

@@ -10,20 +10,26 @@ export const messagingAPI = {
     return apiClient.get(`/conversations/${id}`);
   },
 
-  getMessages: async (conversationId: string, cursor?: string): Promise<{ messages: Message[]; next_cursor: string | null }> => {
-    const params = cursor ? `?cursor=${cursor}` : '';
+  getMessages: async (
+    conversationId: string,
+    before?: string
+  ): Promise<{ messages: Message[] }> => {
+    const params = before ? `?before=${before}&limit=30` : '?limit=30';
     return apiClient.get(`/conversations/${conversationId}/messages${params}`);
   },
 
   sendMessage: async (conversationId: string, body: string): Promise<{ message: Message }> => {
-    return apiClient.post(`/conversations/${conversationId}/messages`, { body, message_type: 'text' });
+    return apiClient.post(`/conversations/${conversationId}/messages`, { body });
   },
 
   markAsRead: async (conversationId: string): Promise<void> => {
-    return apiClient.post(`/conversations/${conversationId}/read`);
+    return apiClient.patch(`/conversations/${conversationId}/read`);
   },
 
-  archiveConversation: async (id: string): Promise<void> => {
-    return apiClient.post(`/conversations/${id}/archive`);
+  openConversation: async (
+    jobId: string,
+    customerId: string
+  ): Promise<{ conversation: Conversation }> => {
+    return apiClient.post('/conversations', { job_id: jobId, customer_id: customerId });
   },
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Button } from '../../../src/components/ui/Button';
 import { Card } from '../../../src/components/ui/Card';
@@ -39,9 +39,11 @@ export default function ProfileScreen() {
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Account</Text>
-        <Card style={styles.menuCard}>
-          <Text style={styles.menuItem}>Edit Profile</Text>
-        </Card>
+        <TouchableOpacity onPress={() => router.push('/(tabs)/profile/edit')}>
+          <Card style={styles.menuCard}>
+            <Text style={styles.menuItem}>Edit Profile  →</Text>
+          </Card>
+        </TouchableOpacity>
         <Card style={styles.menuCard}>
           <Text style={styles.menuItem}>Settings</Text>
         </Card>
