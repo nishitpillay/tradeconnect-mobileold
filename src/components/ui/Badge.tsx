@@ -58,6 +58,7 @@ interface BadgeProps extends VariantProps<typeof badgeVariants> {
   label: string;
   icon?: keyof typeof Ionicons.glyphMap;
   className?: string;
+  type?: string;
 }
 
 export const Badge: React.FC<BadgeProps> = ({

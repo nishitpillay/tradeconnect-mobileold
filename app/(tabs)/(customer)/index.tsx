@@ -17,7 +17,7 @@ export default function CustomerHomeScreen() {
   });
 
   const handleCreateJob = () => {
-    router.push('/(tabs)/(customer)/post-job/step-1');
+    router.push('/(tabs)/(customer)/post-job');
   };
 
   const renderJobCard = ({ item }: { item: Job }) => (

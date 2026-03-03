@@ -1,5 +1,6 @@
 import { apiClient } from './client';
-import type { LoginInput, RegisterInput, LoginResponse, User, AuthTokens } from '../types';
+import type { LoginInput, RegisterInput } from '@tradeconnect/shared/schemas/auth.schema';
+import type { LoginResponse, User, AuthTokens } from '../types';
 
 export const authAPI = {
   login: async (data: LoginInput): Promise<LoginResponse> => {

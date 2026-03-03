@@ -1,4 +1,5 @@
 import { apiClient } from './client';
+import type { SubmitQuoteInput } from '@tradeconnect/shared/schemas/quote.schema';
 import type { Quote } from '../types';
 
 export const quotesAPI = {
@@ -18,19 +19,7 @@ export const quotesAPI = {
   },
 
   // Provider: submit quote on a specific job (prices in AUD cents)
-  submitQuote: async (jobId: string, data: {
-    quote_type: 'fixed' | 'estimate_range' | 'hourly' | 'call_for_quote';
-    price_fixed?: number;
-    price_min?: number;
-    price_max?: number;
-    hourly_rate?: number;
-    is_gst_included?: boolean;
-    scope_notes?: string;
-    inclusions?: string;
-    exclusions?: string;
-    timeline_days?: number;
-    warranty_months?: number;
-  }): Promise<{ quote: Quote }> => {
+  submitQuote: async (jobId: string, data: SubmitQuoteInput): Promise<{ quote: Quote }> => {
     return apiClient.post(`/jobs/${jobId}/quotes`, data);
   },
 

@@ -8,7 +8,7 @@ import { useAuthStore } from '../../src/stores/authStore';
 import { useSessionStore } from '../../src/stores/sessionStore';
 import { useUIStore } from '../../src/stores/uiStore';
 import { authAPI } from '../../src/api/auth.api';
-import { LoginSchema } from '../../src/schemas/auth.schema';
+import { LoginSchema } from '@tradeconnect/shared/schemas/auth.schema';
 import type { LoginInput } from '../../src/types';
 
 export default function LoginScreen() {
@@ -46,7 +46,7 @@ export default function LoginScreen() {
     const result = LoginSchema.safeParse({ email, password });
     if (!result.success) {
       const fieldErrors: Record<string, string> = {};
-      result.error.errors.forEach((err) => {
+      result.error.errors.forEach((err: { path: (string | number)[]; message: string }) => {
         if (err.path[0]) fieldErrors[err.path[0] as string] = err.message;
       });
       setErrors(fieldErrors);

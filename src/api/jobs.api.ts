@@ -1,5 +1,6 @@
 import { apiClient } from './client';
-import type { Job, JobFeedResponse, CreateJobInput } from '../types';
+import type { CreateJobInput } from '@tradeconnect/shared/schemas/job.schema';
+import type { Job, JobFeedResponse } from '../types';
 
 interface JobFeedQuery {
   category_id?: string;

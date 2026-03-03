@@ -58,7 +58,9 @@ function QuoteCard({
     <Card style={styles.quoteCard}>
       <View style={styles.quoteHeader}>
         <View style={{ flex: 1 }}>
-          <Text style={styles.providerName}>{quote.provider?.full_name || 'Provider'}</Text>
+          <Text style={styles.providerName}>
+            {quote.provider?.user?.full_name || quote.provider?.business_name || 'Provider'}
+          </Text>
           <Text style={styles.quotePrice}>{quotePrice(quote)}</Text>
         </View>
         <StatusPill status={quote.status} size="sm" />

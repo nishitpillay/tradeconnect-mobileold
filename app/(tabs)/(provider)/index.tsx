@@ -5,7 +5,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { Card } from '../../../src/components/ui/Card';
 import { Badge } from '../../../src/components/ui/Badge';
 import { jobsAPI } from '../../../src/api/jobs.api';
-import type { Job } from '../../../src/types';
+import type { Job, JobFeedResponse } from '../../../src/types';
 
 export default function ProviderFeedScreen() {
   const router = useRouter();
@@ -19,12 +19,12 @@ export default function ProviderFeedScreen() {
     isRefetching,
   } = useInfiniteQuery({
     queryKey: ['jobFeed'],
-    queryFn: ({ pageParam }) => jobsAPI.getFeed({ cursor: pageParam, limit: 20 }),
+    queryFn: ({ pageParam }: { pageParam: string | undefined }) => jobsAPI.getFeed({ cursor: pageParam, limit: 20 }),
     getNextPageParam: (lastPage) => lastPage.nextCursor,
-    initialPageParam: undefined,
+    initialPageParam: undefined as string | undefined,
   });
 
-  const jobs = data?.pages.flatMap((page) => page.jobs) || [];
+  const jobs = data?.pages.flatMap((page: JobFeedResponse) => page.jobs) || [];
 
   const formatBudget = (min: number | null, max: number | null) => {
     if (!min || !max) return null;

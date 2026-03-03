@@ -166,7 +166,7 @@ function Step2Details({
 
       <SectionLabel>Job title *</SectionLabel>
       <TextInput
-        style={[styles.input, errors.title && styles.inputError]}
+        style={[styles.input, !!errors.title && styles.inputError]}
         value={data.title}
         onChangeText={(v) => onChange('title', v)}
         placeholder="e.g. Fix leaking kitchen tap"
@@ -178,7 +178,7 @@ function Step2Details({
 
       <SectionLabel>Description *</SectionLabel>
       <TextInput
-        style={[styles.input, styles.textArea, errors.description && styles.inputError]}
+        style={[styles.input, styles.textArea, !!errors.description && styles.inputError]}
         value={data.description}
         onChangeText={(v) => onChange('description', v)}
         placeholder="Describe what needs to be done, any relevant details…"
@@ -227,7 +227,7 @@ function Step3Location({
 
       <SectionLabel>Suburb *</SectionLabel>
       <TextInput
-        style={[styles.input, errors.suburb && styles.inputError]}
+        style={[styles.input, !!errors.suburb && styles.inputError]}
         value={data.suburb}
         onChangeText={(v) => onChange('suburb', v)}
         placeholder="e.g. Surry Hills"
@@ -239,7 +239,7 @@ function Step3Location({
 
       <SectionLabel>Postcode *</SectionLabel>
       <TextInput
-        style={[styles.input, errors.postcode && styles.inputError]}
+        style={[styles.input, !!errors.postcode && styles.inputError]}
         value={data.postcode}
         onChangeText={(v) => onChange('postcode', v)}
         placeholder="e.g. 2010"
@@ -341,7 +341,7 @@ function Step5Budget({
         <View style={styles.budgetField}>
           <Text style={styles.currencyPrefix}>$</Text>
           <TextInput
-            style={[styles.input, styles.budgetInput, errors.budget_min && styles.inputError]}
+            style={[styles.input, styles.budgetInput, !!errors.budget_min && styles.inputError]}
             value={data.budget_min}
             onChangeText={(v) => onChange('budget_min', v.replace(/[^0-9]/g, ''))}
             placeholder="Min"
@@ -353,7 +353,7 @@ function Step5Budget({
         <View style={styles.budgetField}>
           <Text style={styles.currencyPrefix}>$</Text>
           <TextInput
-            style={[styles.input, styles.budgetInput, errors.budget_max && styles.inputError]}
+            style={[styles.input, styles.budgetInput, !!errors.budget_max && styles.inputError]}
             value={data.budget_max}
             onChangeText={(v) => onChange('budget_max', v.replace(/[^0-9]/g, ''))}
             placeholder="Max"
@@ -381,7 +381,7 @@ function Step5Budget({
         Only revealed to the awarded provider. Required to publish immediately.
       </Text>
       <TextInput
-        style={[styles.input, errors.exact_address && styles.inputError]}
+        style={[styles.input, !!errors.exact_address && styles.inputError]}
         value={data.exact_address}
         onChangeText={(v) => onChange('exact_address', v)}
         placeholder="e.g. 42 Example St, Surry Hills"

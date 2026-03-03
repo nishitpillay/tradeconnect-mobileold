@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, Text, ActivityIndicator } from 'react-native';
+import { TouchableOpacity, Text, ActivityIndicator, type StyleProp, type ViewStyle } from 'react-native';
 import { cssInterop } from 'nativewind';
 import { Ionicons } from '@expo/vector-icons';
 import { cva, type VariantProps } from 'class-variance-authority';
@@ -60,6 +60,7 @@ interface ButtonProps extends VariantProps<typeof buttonVariants> {
   onPress: () => void;
   children: React.ReactNode;
   className?: string;
+  style?: StyleProp<ViewStyle>;
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -73,6 +74,7 @@ export const Button: React.FC<ButtonProps> = ({
   onPress,
   children,
   className = '',
+  style,
 }) => {
   const isDisabled = disabled || loading;
 
@@ -90,6 +92,7 @@ export const Button: React.FC<ButtonProps> = ({
       className={`${buttonVariants({ variant, size })} ${
         fullWidth ? 'w-full' : ''
       } ${isDisabled ? 'opacity-50' : ''} ${className}`}
+      style={style}
       onPress={onPress}
       disabled={isDisabled}
       activeOpacity={0.7}

@@ -34,8 +34,15 @@ export interface LoginResponse {
   refresh_token: string;
 }
 
+export interface AuthTokens {
+  access_token: string;
+  refresh_token: string;
+}
+
 // Re-exported for convenience — source of truth is the schema file
-export type { LoginInput, RegisterInput } from '../schemas/auth.schema';
+export type { LoginInput, RegisterInput } from '@tradeconnect/shared/schemas/auth.schema';
+export type { CreateJobInput } from '@tradeconnect/shared/schemas/job.schema';
+export type { SubmitQuoteInput } from '@tradeconnect/shared/schemas/quote.schema';
 
 // ===== JOB =====
 
