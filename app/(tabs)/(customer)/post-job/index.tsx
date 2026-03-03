@@ -36,6 +36,73 @@ const CATEGORIES = [
   { id: 'a000000f-0000-4000-a000-00000000000f', name: 'Handyman',           icon: '🔨' },
 ] as const;
 
+const FEATURED_CATEGORIES = [
+  {
+    id: 'a0000001-0000-4000-a000-000000000001',
+    name: 'Plumbing',
+    icon: 'P',
+    short: 'Leaks, drains, hot water, taps, toilets, and full plumbing installs.',
+    detail:
+      'Plumbing jobs cover everything from urgent leaks to planned installations, including drains, burst pipes, taps, toilets, kitchens, bathrooms, and hot water systems.',
+  },
+  {
+    id: 'a0000002-0000-4000-a000-000000000002',
+    name: 'Electrical',
+    icon: 'E',
+    short: 'Lighting, wiring, switchboards, power points, appliances, and fault repairs.',
+    detail:
+      'Electrical services include repairs, upgrades, and new installations such as lighting, switchboards, power points, rewiring, smoke alarms, and fault finding.',
+  },
+  {
+    id: 'a0000003-0000-4000-a000-000000000003',
+    name: 'Carpentry',
+    icon: 'C',
+    short: 'Framing, decking, doors, cabinetry, shelving, and timber repairs.',
+    detail:
+      'Carpentry covers structural timber work and finish work, including doors, decks, pergolas, shelving, cabinetry, framing, and general wood repairs.',
+  },
+  {
+    id: 'a0000004-0000-4000-a000-000000000004',
+    name: 'Painting',
+    icon: 'Pt',
+    short: 'Interior walls, exterior surfaces, prep work, coatings, and touch-ups.',
+    detail:
+      'Painting services improve appearance and durability across interiors and exteriors, from full repaints and trim work to prep, coatings, and touch-ups.',
+  },
+  {
+    id: 'a0000005-0000-4000-a000-000000000005',
+    name: 'Landscaping',
+    icon: 'L',
+    short: 'Paving, turf, planting, retaining walls, irrigation, and garden upgrades.',
+    detail:
+      'Landscaping covers outdoor improvement work such as paving, turf laying, planting, garden design, retaining walls, irrigation, and yard upgrades.',
+  },
+  {
+    id: 'a0000009-0000-4000-a000-000000000009',
+    name: 'Roofing',
+    icon: 'R',
+    short: 'Roof repairs, replacement, guttering, storm damage, and leak detection.',
+    detail:
+      'Roofing includes maintenance, restoration, repairs, guttering, flashing, inspections, and storm damage work for homes and commercial properties.',
+  },
+  {
+    id: 'a0000008-0000-4000-a000-000000000008',
+    name: 'Tiling',
+    icon: 'T',
+    short: 'Bathrooms, kitchens, floors, splashbacks, grout, and waterproofing.',
+    detail:
+      'Tiling work includes bathrooms, floors, walls, splashbacks, outdoor areas, grout renewal, waterproofing, and tile replacement.',
+  },
+  {
+    id: 'a000000d-0000-4000-a000-00000000000d',
+    name: 'Demolition',
+    icon: 'D',
+    short: 'Strip-outs, wall removal, flooring demolition, sheds, and site clearing.',
+    detail:
+      'Demolition is for safe removal and site preparation before renovation or rebuilding, including kitchens, bathrooms, walls, flooring, sheds, and cleanup.',
+  },
+] as const;
+
 const AU_STATES = ['NSW', 'VIC', 'QLD', 'WA', 'SA', 'TAS', 'ACT', 'NT'] as const;
 type AUState = typeof AU_STATES[number];
 
@@ -121,11 +188,16 @@ function Step1Category({
   data: WizardData;
   onChange: (k: keyof WizardData, v: string) => void;
 }) {
+  const selectedCategory = FEATURED_CATEGORIES.find((category) => category.id === data.category_id);
+
   return (
     <ScrollView contentContainerStyle={styles.stepContainer} showsVerticalScrollIndicator={false}>
       <Text style={styles.stepTitle}>What type of job is it?</Text>
+      <Text style={styles.stepSubtitle}>
+        Pick a category to see a short explanation before you continue.
+      </Text>
       <View style={styles.categoryGrid}>
-        {CATEGORIES.map((cat) => (
+        {FEATURED_CATEGORIES.map((cat) => (
           <TouchableOpacity
             key={cat.id}
             style={[styles.categoryCard, data.category_id === cat.id && styles.categoryCardSelected]}
@@ -142,9 +214,25 @@ function Step1Category({
             >
               {cat.name}
             </Text>
+            <Text style={styles.categoryShort} numberOfLines={3}>
+              {cat.short}
+            </Text>
           </TouchableOpacity>
         ))}
       </View>
+      {selectedCategory ? (
+        <View style={styles.categoryDetailCard}>
+          <Text style={styles.categoryDetailEyebrow}>{selectedCategory.name}</Text>
+          <Text style={styles.categoryDetailTitle}>What jobs fit here</Text>
+          <Text style={styles.categoryDetailText}>{selectedCategory.detail}</Text>
+        </View>
+      ) : (
+        <View style={styles.categoryHintCard}>
+          <Text style={styles.categoryHintText}>
+            Select a category to preview the type of work providers expect in that section.
+          </Text>
+        </View>
+      )}
     </ScrollView>
   );
 }
@@ -647,6 +735,12 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: '700',
     color: '#111827',
+    marginBottom: 8,
+  },
+  stepSubtitle: {
+    fontSize: 14,
+    color: '#6B7280',
+    lineHeight: 20,
     marginBottom: 20,
   },
 
@@ -657,33 +751,77 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   categoryCard: {
-    width: '30%',
-    aspectRatio: 1,
+    width: '48%',
     backgroundColor: '#FFFFFF',
     borderRadius: 12,
     borderWidth: 2,
     borderColor: '#E5E7EB',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 8,
+    padding: 12,
   },
   categoryCardSelected: {
     borderColor: '#2563EB',
     backgroundColor: '#EFF6FF',
   },
   categoryIcon: {
-    fontSize: 28,
-    marginBottom: 6,
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#2563EB',
+    marginBottom: 10,
   },
   categoryName: {
-    fontSize: 11,
+    fontSize: 14,
     color: '#374151',
-    textAlign: 'center',
-    fontWeight: '500',
+    fontWeight: '700',
+    marginBottom: 6,
   },
   categoryNameSelected: {
     color: '#2563EB',
     fontWeight: '700',
+  },
+  categoryShort: {
+    fontSize: 12,
+    color: '#6B7280',
+    lineHeight: 18,
+  },
+  categoryHintCard: {
+    marginTop: 16,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    padding: 16,
+  },
+  categoryHintText: {
+    fontSize: 13,
+    color: '#6B7280',
+    lineHeight: 19,
+  },
+  categoryDetailCard: {
+    marginTop: 16,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: '#DBEAFE',
+    padding: 16,
+  },
+  categoryDetailEyebrow: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#2563EB',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+    marginBottom: 6,
+  },
+  categoryDetailTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#111827',
+    marginBottom: 8,
+  },
+  categoryDetailText: {
+    fontSize: 14,
+    color: '#374151',
+    lineHeight: 22,
   },
 
   // Form fields
