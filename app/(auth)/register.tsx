@@ -8,7 +8,7 @@ import { useAuthStore } from '../../src/stores/authStore';
 import { useSessionStore } from '../../src/stores/sessionStore';
 import { useUIStore } from '../../src/stores/uiStore';
 import { authAPI } from '../../src/api/auth.api';
-import { RegisterSchema } from '@tradeconnect/shared/schemas/auth.schema';
+import { RegisterSchema } from '@tradeconnect/shared';
 import type { RegisterInput } from '../../src/types';
 
 export default function RegisterScreen() {

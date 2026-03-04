@@ -40,9 +40,7 @@ export interface AuthTokens {
 }
 
 // Re-exported for convenience — source of truth is the schema file
-export type { LoginInput, RegisterInput } from '@tradeconnect/shared/schemas/auth.schema';
-export type { CreateJobInput } from '@tradeconnect/shared/schemas/job.schema';
-export type { SubmitQuoteInput } from '@tradeconnect/shared/schemas/quote.schema';
+export type { LoginInput, RegisterInput, CreateJobInput, SubmitQuoteInput } from '@tradeconnect/shared';
 
 // ===== JOB =====
 

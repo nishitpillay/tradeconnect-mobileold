@@ -1,5 +1,5 @@
 import { apiClient } from './client';
-import type { SubmitQuoteInput } from '@tradeconnect/shared/schemas/quote.schema';
+import type { SubmitQuoteInput } from '@tradeconnect/shared';
 import type { Quote } from '../types';
 
 export const quotesAPI = {

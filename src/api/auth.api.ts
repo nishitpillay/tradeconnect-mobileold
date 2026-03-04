@@ -1,5 +1,5 @@
 import { apiClient } from './client';
-import type { LoginInput, RegisterInput } from '@tradeconnect/shared/schemas/auth.schema';
+import type { LoginInput, RegisterInput } from '@tradeconnect/shared';
 import type { LoginResponse, User, AuthTokens } from '../types';
 
 export const authAPI = {

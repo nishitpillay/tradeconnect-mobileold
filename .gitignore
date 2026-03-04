@@ -1,6 +1,10 @@
 node_modules/
 .expo/
 dist/
+!vendor/
+!vendor/tradeconnect-shared/
+!vendor/tradeconnect-shared/dist/
+!vendor/tradeconnect-shared/dist/**
 npm-debug.*
 *.jks
 *.p8

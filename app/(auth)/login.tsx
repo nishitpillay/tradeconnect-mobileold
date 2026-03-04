@@ -8,7 +8,7 @@ import { useAuthStore } from '../../src/stores/authStore';
 import { useSessionStore } from '../../src/stores/sessionStore';
 import { useUIStore } from '../../src/stores/uiStore';
 import { authAPI } from '../../src/api/auth.api';
-import { LoginSchema } from '@tradeconnect/shared/schemas/auth.schema';
+import { LoginSchema } from '@tradeconnect/shared';
 import type { LoginInput } from '../../src/types';
 
 export default function LoginScreen() {
