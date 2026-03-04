@@ -1,5 +1,6 @@
 export type FeaturedCategory = {
   id: string;
+  slug: string;
   name: string;
   icon: string;
   short: string;
@@ -9,6 +10,7 @@ export type FeaturedCategory = {
 export const FEATURED_CATEGORIES: FeaturedCategory[] = [
   {
     id: 'a0000001-0000-4000-a000-000000000001',
+    slug: 'plumbing',
     name: 'Plumbing',
     icon: 'P',
     short: 'Leaks, drains, hot water, taps, toilets, and full plumbing installs.',
@@ -17,6 +19,7 @@ export const FEATURED_CATEGORIES: FeaturedCategory[] = [
   },
   {
     id: 'a0000002-0000-4000-a000-000000000002',
+    slug: 'electrical',
     name: 'Electrical',
     icon: 'E',
     short: 'Lighting, wiring, switchboards, power points, appliances, and fault repairs.',
@@ -25,6 +28,7 @@ export const FEATURED_CATEGORIES: FeaturedCategory[] = [
   },
   {
     id: 'a0000003-0000-4000-a000-000000000003',
+    slug: 'carpentry',
     name: 'Carpentry',
     icon: 'C',
     short: 'Framing, decking, doors, cabinetry, shelving, and timber repairs.',
@@ -33,6 +37,7 @@ export const FEATURED_CATEGORIES: FeaturedCategory[] = [
   },
   {
     id: 'a0000004-0000-4000-a000-000000000004',
+    slug: 'painting',
     name: 'Painting',
     icon: 'Pt',
     short: 'Interior walls, exterior surfaces, prep work, coatings, and touch-ups.',
@@ -41,6 +46,7 @@ export const FEATURED_CATEGORIES: FeaturedCategory[] = [
   },
   {
     id: 'a0000005-0000-4000-a000-000000000005',
+    slug: 'landscaping',
     name: 'Landscaping',
     icon: 'L',
     short: 'Paving, turf, planting, retaining walls, irrigation, and garden upgrades.',
@@ -49,6 +55,7 @@ export const FEATURED_CATEGORIES: FeaturedCategory[] = [
   },
   {
     id: 'a0000009-0000-4000-a000-000000000009',
+    slug: 'roofing',
     name: 'Roofing',
     icon: 'R',
     short: 'Roof repairs, replacement, guttering, storm damage, and leak detection.',
@@ -57,6 +64,7 @@ export const FEATURED_CATEGORIES: FeaturedCategory[] = [
   },
   {
     id: 'a0000008-0000-4000-a000-000000000008',
+    slug: 'tiling',
     name: 'Tiling',
     icon: 'T',
     short: 'Bathrooms, kitchens, floors, splashbacks, grout, and waterproofing.',
@@ -64,7 +72,8 @@ export const FEATURED_CATEGORIES: FeaturedCategory[] = [
       'Tiling work includes bathrooms, floors, walls, splashbacks, outdoor areas, grout renewal, waterproofing, and tile replacement.',
   },
   {
-    id: 'a000000d-0000-4000-a000-00000000000d',
+    id: 'a0000010-0000-4000-a000-000000000010',
+    slug: 'demolition',
     name: 'Demolition',
     icon: 'D',
     short: 'Strip-outs, wall removal, flooring demolition, sheds, and site clearing.',

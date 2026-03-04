@@ -1,5 +1,5 @@
 import { apiClient } from './client';
-import type { CustomerProfile, ProviderProfile, User } from '../types';
+import type { CategoryProvider, CustomerProfile, ProviderProfile, User } from '../types';
 
 export const profilesAPI = {
   getMyProfile: async (): Promise<{
@@ -12,6 +12,10 @@ export const profilesAPI = {
 
   getProviderProfile: async (userId: string): Promise<{ profile: ProviderProfile }> => {
     return apiClient.get(`/profiles/providers/${userId}`);
+  },
+
+  listProvidersByCategory: async (slug: string): Promise<{ providers: CategoryProvider[] }> => {
+    return apiClient.get(`/profiles/categories/${slug}/providers`);
   },
 
   updateUser: async (data: {
